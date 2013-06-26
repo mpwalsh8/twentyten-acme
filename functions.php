@@ -141,7 +141,7 @@ function acme_wp_head() {
     }
      */
 
-    //  TwentyTen-ACC needs jQuery!
+    //  TwentyTen-ACME needs jQuery!
     wp_enqueue_script('jquery') ;
     
     //  Load Chosen jQuery plugin to handle dropdown menus on mobile devices

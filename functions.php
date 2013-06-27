@@ -3,7 +3,6 @@
 
 define('ACME_MAJOR_RELEASE', '0');
 define('ACME_MINOR_RELEASE', '1');
-define('ACME_BUILD_NUMBER', 'tbd');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -240,7 +239,7 @@ function acme_credits()
 {
     $txt = sprintf('<div id="acme-footer">Copyright &copy; 2012-%s, %s - All rights reserved.<br>',
         date('Y'), get_bloginfo('name')) ;
-    $txt .= sprintf('The <a href="http://michaelwalsh.org/wordpress-themes/twentyten-acme/" title="TwentyTen-ACME">TwentyTen-ACME</a> theme (v%s.%s.%s) is a child theme of the <a href="http://theme.wordpress.com/themes/twentyten/">Twenty Ten</a> theme.</div>', ACME_MAJOR_RELEASE, ACME_MINOR_RELEASE, ACME_BUILD_NUMBER) ;
+    $txt .= sprintf('The <a href="http://michaelwalsh.org/wordpress-themes/twentyten-acme/" title="TwentyTen-ACME">TwentyTen-ACME</a> theme (v%s.%s) is a child theme of the <a href="http://theme.wordpress.com/themes/twentyten/">Twenty Ten</a> theme.</div>', ACME_MAJOR_RELEASE, ACME_MINOR_RELEASE) ;
 
     echo $txt ;
 }

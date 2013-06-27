@@ -1,5 +1,10 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
+
+define('ACME_MAJOR_RELEASE', '0');
+define('ACME_MINOR_RELEASE', '1');
+define('ACME_BUILD_NUMBER', 'tbd');
+
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  *
@@ -53,7 +58,7 @@ function twentyten_setup() {
 	$custom_header_support = array(
 		// The default image to use.
 		// The %s is a placeholder for the theme template directory URI.
-		'default-image' => get_bloginfo('stylesheet_directory') . '/images/GoLufkin_Banner_940x198.png',
+		'default-image' => get_bloginfo('stylesheet_directory') . '/images/TwentyTen-ACME_Logo_v1.png',
 		// The height and width of our custom header.
 		'width' => apply_filters( 'twentyten_header_image_width', 940 ),
 		'height' => apply_filters( 'twentyten_header_image_height', 198 ),
@@ -88,10 +93,10 @@ function twentyten_setup() {
 	// Default custom headers packaged with the theme. %s is a placeholder for the theme template directory URI.
 	register_default_headers( array(
   		'std' => array(
-			'url' => get_bloginfo('stylesheet_directory') . '/images/GoLufkin_Banner_940x198.png',
-			'thumbnail_url' => get_bloginfo('stylesheet_directory') . '/images/GoLufkin_Banner_300x63.png',
+			'url' => get_bloginfo('stylesheet_directory') . '/images/TwentyTen-ACME_Logo_v1.png',
+			'thumbnail_url' => get_bloginfo('stylesheet_directory') . '/images/TwentyTen-ACME_Logo_v1-thumbnail.png',
 			/* translators: header image description */
-			'description' => __( 'Lufkin Athletics Booster Club', 'twentyten' )
+			'description' => __( 'TwentyTen-ACME', 'twentyten' )
 		)
 	) );
 }
@@ -226,6 +231,20 @@ function twentyten_acme_wp_footer()
 }
 
 add_action('wp_footer', 'twentyten_acme_wp_footer');
+
+/**
+ * Action to add theme credits
+ *
+ */
+function acme_credits()
+{
+    $txt = sprintf('<div id="acme-footer">Copyright &copy; 2012-%s, %s - All rights reserved.<br>',
+        date('Y'), get_bloginfo('name')) ;
+    $txt .= sprintf('The <a href="http://michaelwalsh.org/wordpress-themes/twentyten-acme/" title="TwentyTen-ACME">TwentyTen-ACME</a> theme (v%s.%s.%s) is a child theme of the <a href="http://theme.wordpress.com/themes/twentyten/">Twenty Ten</a> theme.</div>', ACME_MAJOR_RELEASE, ACME_MINOR_RELEASE, ACME_BUILD_NUMBER) ;
+
+    echo $txt ;
+}
+add_action('twentyten_credits', 'acme_credits') ;
 
 //  Load AdRotate customizations
 include_once('acme-adrotate.php');

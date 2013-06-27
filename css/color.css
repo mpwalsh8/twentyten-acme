@@ -1,0 +1,105 @@
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+
+a:link, a:visited {
+    color: #21759b;
+}
+
+a:active, a:hover {
+    color: #d54e21;
+}
+
+.page-title a:link,
+.page-title a:visited {
+	color: #21759b;
+}
+.page-title a:active,
+.page-title a:hover {
+	color: #d54e21;
+}
+
+.entry-title a:active,
+.entry-title a:hover {
+	color: #d54e21;
+}
+
+.page-link a:active,
+.page-link a:hover {
+	color: #d54e21;
+}
+
+.entry-meta a,
+.entry-utility a {
+	color: #21759b;
+}
+.entry-meta a:hover,
+.entry-utility a:hover {
+	color: #d54e21;
+}
+
+.navigation a:link,
+.navigation a:visited {
+	color: #21759b;
+}
+.navigation a:active,
+.navigation a:hover {
+	color: #d54e21;
+}
+
+.comment-meta a:link,
+.comment-meta a:visited {
+	color: #21759b;
+}
+.comment-meta a:active,
+.comment-meta a:hover {
+	color: #d54e21;
+}
+
+.reply a,
+a.comment-edit-link {
+	color: #21759b;
+}
+.reply a:hover,
+a.comment-edit-link:hover {
+	color: #d54e21;
+}
+
+#respond .required {
+	color: #d54e21;
+}
+
+.widget_rss a.rsswidget:hover {
+	color: #d54e21;
+}
+
+.widget-title {
+    border-bottom: 3px solid #d54e21;
+}
+
+.entry-title {
+    border-bottom: 4px solid #d54e21;
+}
+
+.entry-title a:active, .entry-title a:hover {
+    color: #d54e21;
+}
+
+/* =Responsive Structure
+----------------------------------------------- */
+
+@media (max-width: 1023px) {
+}
+
+@media (max-width: 650px) {
+}
+
+@media (max-width: 450px) {
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+}
+
+/* =Print
+----------------------------------------------- */
+
+@media print {
+}

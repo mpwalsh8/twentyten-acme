@@ -90,4 +90,18 @@ function acme_custom_checkout_field_order_meta_keys( $keys ) {
 	$keys[] = 'Board of Directors Interest';
 	return $keys;
 }
+
+//  Set number of columns for related products
+add_filter ( 'woocommerce_product_thumbnails_columns', 'acme_thumb_cols' );
+function acme_thumb_cols()
+{
+    return 4;
+}
+
+//  Set number of columns for products on shop page
+add_filter ( 'loop_shop_columns', 'acme_loop_shop_columns' );
+function acme_loop_shop_columns()
+{
+    return 3;
+}
 ?>

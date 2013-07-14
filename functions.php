@@ -229,9 +229,9 @@ function acme_credits()
 add_action('twentyten_credits', 'acme_credits') ;
 
 //  Load AdRotate customizations
-include_once('acme-adrotate.php');
+require_once(dirname( __FILE__ ) . '/xtra/adrotate.php');
 
 //  Load WooCommerce customizations
-include_once('acme-woocommerce.php');
+require_once(dirname( __FILE__ ) . '/xtra/woocommerce.php');
 
 ?>

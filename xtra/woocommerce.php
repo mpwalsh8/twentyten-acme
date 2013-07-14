@@ -1,14 +1,14 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /**
- * TwentyTen-ACC WooCommerce
+ * TwentyTen-ACME WooCommerce
  *
  * $Id$
  *
  * (c) 2013 by Mike Walsh
  *
  * @author Mike Walsh <mpwalsh8@gmail.com>
- * @package TwentyTen-ACC
+ * @package TwentyTen-ACME
  * @subpackage WooCommerce
  * @version $Revision$
  * @lastmodified $Date$

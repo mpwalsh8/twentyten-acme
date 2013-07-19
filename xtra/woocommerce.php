@@ -37,11 +37,11 @@ function acme_loop_shop_columns()
  */
 function acme_add_roles()
 {
-    //  List of WooCommerce capabilities needed for fullfillment
+    //  List of WooCommerce capabilities needed for fulfillment
     //  based on email from WC Support.  Some have been set to false
     //  to prevent certain operations.
 
-    $acme_wc_fullfillment_role = new WP_Role('acme_shop_fullfillment', array(
+    $acme_wc_fulfillment_role = new WP_Role('acme_shop_fulfillment', array(
         'read' => true,
         'edit_shop_order' => true,
         'read_shop_order' => true,
@@ -67,21 +67,21 @@ function acme_add_roles()
     //  has been changed.  If it has, the role needs to be removed and
     //  then added again with the new capabilities.
 
-    $role = get_role($acme_wc_fullfillment_role->name);
+    $role = get_role($acme_wc_fulfillment_role->name);
 
     //  Sort the data by keys so the array can be compared
 
     ksort($role->capabilities) ;
-    ksort($acme_wc_fullfillment_role->capabilities) ;
+    ksort($acme_wc_fulfillment_role->capabilities) ;
 
     //  If what is stored doesn't match what the default is, delete it and add it again
 
-    if ($role->capabilities != $acme_wc_fullfillment_role->capabilities)
+    if ($role->capabilities != $acme_wc_fulfillment_role->capabilities)
     {
-        $role = remove_role($acme_wc_fullfillment_role->name);
+        $role = remove_role($acme_wc_fulfillment_role->name);
 
-        $role = add_role($acme_wc_fullfillment_role->name,
-            __('Shop Fullfillment', 'woocommerce'), $acme_wc_fullfillment_role->capabilities) ;
+        $role = add_role($acme_wc_fulfillment_role->name,
+            __('Shop Fullfillment', 'woocommerce'), $acme_wc_fulfillment_role->capabilities) ;
     }
 }
 

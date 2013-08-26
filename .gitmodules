@@ -1,3 +1,6 @@
 [submodule "js/chosen"]
 	path = js/chosen
 	url = https://github.com/mpwalsh8/chosen.git
+[submodule "of"]
+	path = of
+	url = https://github.com/mpwalsh8/options-framework-theme.git

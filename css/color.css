@@ -83,6 +83,10 @@ a.comment-edit-link:hover {
     color: #d54e21;
 }
 
+.home .sticky {
+    border: 1px dashed #d54e21;
+}
+
 /* =Responsive Structure
 ----------------------------------------------- */
 

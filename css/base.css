@@ -1,16 +1,18 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 html {
-    background: #efefef;
+    /*background: #efefef;*/
 }
 
 body {
     /*border: 1px solid black;*/
+    /*
     font-family: 'Trebuchet MS', Verdana, Arial, Helvetica, sans-serif;
     font-size: 0.8em;
     color: #000000;
     background: #f1f1f1;
     padding: 0 1em;
+    */
 }
 
 a:link, a:visited {
@@ -140,6 +142,11 @@ a.comment-edit-link:hover {
 
 .skip-link {
     display: none;
+}
+
+.home .sticky {
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 /* =Responsive Structure

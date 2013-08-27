@@ -1,8 +1,28 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
+function acme_optionsframework_option_name()
+{
+	//error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
+    return 'TwentyTen-ACME' ;
+}
+//add_action('optionsframework_option_name', 'acme_optionsframework_option_name') ;
+
+/* 
+ * Loads the Options Panel
+ *
+ * If you're loading from a child theme use stylesheet_directory
+ * instead of template_directory
+ */
+ 
+if ( !function_exists( 'optionsframework_init' ) ) {
+	define( 'OPTIONS_FRAMEWORK_DIRECTORY', get_stylesheet_directory_uri() . '/of/inc/' );
+	require_once dirname( __FILE__ ) . '/of/inc/options-framework.php';
+	require_once dirname( __FILE__ ) . '/of/functions.php';
+}
+
 define('ACME_MAJOR_RELEASE', '0');
-define('ACME_MINOR_RELEASE', '2');
+define('ACME_MINOR_RELEASE', '3');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -52,6 +72,24 @@ function twentyten_setup() {
 		'default-color' => 'f1f1f1',
 	) );
 
+    //  Load the Options Framework to get the theme options
+    //  If nothing is returned, initialize the default values
+
+    $of = get_option( 'optionsframework' );
+
+    // If the option has no saved data, load the defaults
+
+    if ( ! get_option( $of['id'] ) )
+    {
+        //error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
+		optionsframework_setdefaults();
+        $of = get_option( 'optionsframework' );
+	}
+    //error_log(print_r($of, true)) ;
+    $acme = get_option( $of['id'] );
+    //error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
+    //error_log(print_r($acme['acme_background'], true)) ;
+
 	// The custom header business starts here.
 
 	$custom_header_support = array(
@@ -59,8 +97,8 @@ function twentyten_setup() {
 		// The %s is a placeholder for the theme template directory URI.
 		'default-image' => get_bloginfo('stylesheet_directory') . '/images/TwentyTen-ACME_Logo_v1.png',
 		// The height and width of our custom header.
-		'width' => apply_filters( 'twentyten_header_image_width', 940 ),
-		'height' => apply_filters( 'twentyten_header_image_height', 198 ),
+		'width' => apply_filters( 'twentyten_header_image_width', $acme['acme_branding_image_width'] ),
+		'height' => apply_filters( 'twentyten_header_image_height', $acme['acme_branding_image_height'] ),
 		// Support flexible heights.
 		'flex-height' => false,
 		// Don't support text inside the header image.
@@ -119,9 +157,154 @@ function twentyten_admin_header_style() {
 	#headimg #name { }
 	#headimg #desc { }
 */
+    $of = get_option( 'optionsframework' );
+    $of_options = get_option( $of['id'] );
+
+?>
+#branding img {
+    border-top: <?php printf('%spx solid %s;\n', $of['acme_branding_img_border_top'], $of['acme_branding_img_border_color']);?>
+    border-right: <?php printf('%spx solid %s;\n', $of['acme_branding_img_border_right'], $of['acme_branding_img_border_color']);?>
+    border-bottom: <?php printf('%spx solid %s;\n', $of['acme_branding_img_border_bottom'], $of['acme_branding_img_border_color']);?>
+    border-left: <?php printf('%spx solid %s;\n', $of['acme_branding_img_border_left'], $of['acme_branding_img_border_color']);?>
+
+?>
 </style>
 <?php
 }
+
+/**
+ * acme_theme_options_css()
+ *
+ * Generate inline CSS based on the Theme Options settings.
+ */
+function acme_theme_options_css() {
+?>
+<style type="text/css">
+<?php
+    $of = get_option( 'optionsframework' );
+    //error_log(sprintf('->%s<-', print_r($of, true))) ;
+    $acme = get_option( $of['id'] );
+    //error_log(print_r($acme, true)) ;
+    //wp_die('here') ;
+	$imagepath_bg_lg =  get_stylesheet_directory_uri() . '/images/fibblesnork/lg/';
+    $img = &$acme['acme_background_image'] ;
+    $size = (substr($img, strlen($img) - 2, 2) == '40') ? 'sm' : 'lg' ;
+  	$imagepath =  sprintf('%s/images/fibblesnork/%s/%s.jpg', get_stylesheet_directory_uri(), $size, $img) ;
+
+    //  Handle background ...
+
+    $bg = &$acme['acme_background'] ;
+
+    if (is_array($bg))
+    {
+        printf('body, body.login {%s', PHP_EOL) ;
+        foreach ($bg as $key => $value)
+            if (!empty($value))
+            {
+                if ($key == 'image')
+                    printf('    background-%s: url(%s);%s', $key, $value, PHP_EOL) ;
+                else
+                    printf('    background-%s: %s;%s', $key, $value, PHP_EOL) ;
+            }
+        printf('}%s', PHP_EOL) ;
+    }
+?>
+/** Page background **/
+/*
+body, body.login {
+    background: url("<?php printf('%s', $imagepath);?>") repeat scroll -5px 0 #FFFFFF;
+}
+*/
+
+/**  Site typography **/
+body {
+    font-family: <?php printf('"%s", sans-serif;%s', $acme['acme_default_typography']['face'], PHP_EOL);?>
+    font-size: <?php printf('%s;%s', $acme['acme_default_typography']['size'], PHP_EOL);?>
+    color: <?php printf('%s;%s', $acme['acme_default_typography']['color'], PHP_EOL);?>
+}
+
+#content {
+    font-family: <?php printf('"%s", sans-serif;%s', $acme['acme_post_page_content_typography']['face'], PHP_EOL);?>
+    font-size: <?php printf('%s;%s', $acme['acme_post_page_content_typography']['size'], PHP_EOL);?>
+    color: <?php printf('%s;%s', $acme['acme_post_page_content_typography']['color'], PHP_EOL);?>
+}
+
+blockquote {
+    font-family: <?php printf('"%s", sans-serif;%s', $acme['acme_blockquote_typography']['face'], PHP_EOL);?>
+    font-size: <?php printf('%s;%s', $acme['acme_blockquote_typography']['size'], PHP_EOL);?>
+    color: <?php printf('%s;%s', $acme['acme_blockquote_typography']['color'], PHP_EOL);?>
+}
+
+.home .sticky .entry-content {
+    font-family: <?php printf('"%s", sans-serif;%s', $acme['acme_post_page_content_typography']['face'], PHP_EOL);?>
+    font-size: <?php printf('%s;%s', $acme['acme_sticky_post_content_typography']['size'], PHP_EOL);?>
+    color: <?php printf('%s;%s', $acme['acme_sticky_post_content_typography']['color'], PHP_EOL);?>
+}
+
+/**  Site Title **/
+#site-title{
+    display: <?php printf('%s;%s', $acme['acme_site_title_display'], PHP_EOL);?>
+}
+
+/**  Site Descriptioin (tagline) **/
+#site-description {
+    display: <?php printf('%s;%s', $acme['acme_site_description_display'], PHP_EOL);?>
+}
+
+/**  Site Infoo (footer) **/
+#site-info {
+    display: <?php printf('%s;%s', $acme['acme_site_info_display'], PHP_EOL);?>
+    font-family: <?php printf('"%s", sans-serif;%s', $acme['acme_site_info_typography']['face'], PHP_EOL);?>
+    font-size: <?php printf('%s;%s', $acme['acme_site_info_typography']['size'], PHP_EOL);?>
+    color: <?php printf('%s;%s', $acme['acme_site_info_typography']['color'], PHP_EOL);?>
+}
+
+#site-info a {
+    color: <?php printf('%s;%s', $acme['acme_site_info_typography']['color'], PHP_EOL);?>
+}
+
+/**  Branding Image **/
+#branding img {
+    display: <?php printf('%s;%s', $acme['acme_branding_image_display'], PHP_EOL);?>
+    border-top: <?php printf('%spx solid %s;%s', $acme['acme_branding_image_border_top'], $acme['acme_branding_image_border_color'], PHP_EOL);?>
+    border-right: <?php printf('%spx solid %s;%s', $acme['acme_branding_image_border_right'], $acme['acme_branding_image_border_color'], PHP_EOL);?>
+    border-bottom: <?php printf('%spx solid %s;%s', $acme['acme_branding_image_border_bottom'], $acme['acme_branding_image_border_color'], PHP_EOL);?>
+    border-left: <?php printf('%spx solid %s;%s', $acme['acme_branding_image_border_left'], $acme['acme_branding_image_border_color'], PHP_EOL);?>
+}
+
+/** Links **/
+a:link {
+    color: <?php printf('%s;%s', $acme['acme_color_link'], PHP_EOL);?>
+}
+
+a:visited {
+    color: <?php printf('%s;%s', $acme['acme_color_visited_link'], PHP_EOL);?>
+}
+
+a:active,
+a:hover {
+    color: <?php printf('%s;%s', $acme['acme_color_active_hover_link'], PHP_EOL);?>
+}
+
+.widget-title {
+    border-bottom: 3px solid <?php printf('%s;%s', $acme['acme_color_widget_title_border'], PHP_EOL);?>
+}
+
+.entry-title {
+    border-bottom: 4px solid <?php printf('%s;%s', $acme['acme_color_entry_title_border'], PHP_EOL);?>
+}
+
+.home .sticky {
+    margin-left: -10px;
+    background-color: <?php printf('%s;%s', $acme['acme_color_sticky_post_background'], PHP_EOL);?>
+}
+
+<?php printf('%s%s', $acme['acme_additional_css'], PHP_EOL);?>
+</style>
+<?php
+
+}
+add_action('wp_head', 'acme_theme_options_css');
 
 /**
  * acme_wp_head()
@@ -242,13 +425,91 @@ add_filter( 'dropdown_menus_select_current', '__return_false' );
  */
 function acme_credits()
 {
-    $txt = sprintf('<div id="acme-footer">Copyright &copy; 2012-%s, %s - All rights reserved.<br>',
-        date('Y'), get_bloginfo('name')) ;
-    $txt .= sprintf('The <a href="http://michaelwalsh.org/wordpress-themes/twentyten-acme/" title="TwentyTen-ACME">TwentyTen-ACME</a> theme (v%s.%s) is a child theme of the <a href="http://theme.wordpress.com/themes/twentyten/">Twenty Ten</a> theme.</div>', ACME_MAJOR_RELEASE, ACME_MINOR_RELEASE) ;
+    $of = get_option( 'optionsframework' );
+    $acme = get_option( $of['id'] );
+    $txt = is_array($acme) && array_key_exists('acme_credits', $acme) ? trim($acme['acme_credits']) : '' ;
+    //error_log(print_r($txt, true)) ;
+    //$defaults = optionsframework_options_defaults() ;
+
+
+    if (empty($txt))
+    {
+        $txt = __('<p style="text-align: right;">Copyright &copy; 2012-%YEAR%, %SITENAME% - All rights reserved.', 'twentyten') ;
+        $txt .= __('<br/><a href="%THEMEURI%">%THEMENAME% %THEMEVERSION%</a> is a child theme of <a href="%PARENTURI%">%PARENTNAME% %PARENTVERSION%</a></p>', 'twentyten') ;
+    }
+
+    $theme = wp_get_theme() ;
+    $parent = wp_get_theme($theme->get('Template')) ;
+
+    $patterns = array(
+        'day' => '/%DAY%/',
+        'month' => '/%MONTH%/',
+        'year' => '/%YEAR%/',
+        'sitename' => '/%SITENAME%/',
+        'tagline' => '/%TAGLINE%/',
+        'version' => '/%VERSION%/',
+        'themename' => '/%THEMENAME%/',
+        'themeversion' => '/%THEMEVERSION%/',
+        'themeuri' => '/%THEMEURI%/',
+        'parentname' => '/%PARENTNAME%/',
+        'parentversion' => '/%PARENTVERSION%/',
+        'parenturi' => '/%PARENTURI%/',
+    ) ;
+
+    $replacements = array(
+        'day' => date('d'),
+        'month' => date('m'),
+        'year' => date('Y') ,
+        'sitename' => get_bloginfo('name'), 
+        'tagline' => get_bloginfo('description'),
+        'version' => sprintf('v%s.%s', ACME_MAJOR_RELEASE, ACME_MINOR_RELEASE),
+        'themename' => $theme->Name,
+        'themeversion' => sprintf('v%s', $theme->get('Version')),
+        'themeuri' => $theme->get('ThemeURI'),
+        'parentname' => $parent->Name,
+        'parentversion' => sprintf('v%s', $parent->get('Version')),
+        'parenturi' => $parent->get('ThemeURI'),
+    ) ;
+
+    $txt = sprintf('<div id="acme-footer">%s</div>', preg_replace($patterns, $replacements, $txt)) ;
+
+    $x = of_get_default_values() ;
+    //error_log(print_r($x, true)) ;
 
     echo $txt ;
 }
+
 add_action('twentyten_credits', 'acme_credits') ;
+
+/* 
+ * Helper function to return the theme option value. If no value has been saved, it returns $default.
+ * Needed because options are saved as serialized strings.
+ *
+ * This code allows the theme to work without errors if the Options Framework plugin has been disabled.
+ * 
+ * @see http://wptheming.com/options-framework-plugin/
+ */
+
+if ( !function_exists( 'of_get_option' ) ) {
+function acme_get_option($name, $default = false) {
+	
+	$optionsframework_settings = get_option('optionsframework');
+	
+	// Gets the unique option id
+	$option_name = $optionsframework_settings['id'];
+	
+	if ( get_option($option_name) ) {
+		$options = get_option($option_name);
+	}
+		
+	if ( isset($options[$name]) ) {
+		return $options[$name];
+	} else {
+		return $default;
+	}
+}
+}
+
 
 //  Load AdRotate customizations
 require_once(dirname( __FILE__ ) . '/xtra/adrotate.php');

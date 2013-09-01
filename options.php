@@ -1,6 +1,5 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
-//error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
 /**
  * A unique identifier is defined to store the options in the database and reference them from the theme.
  * By default it uses the theme name, in lowercase and without spaces, but this can be changed if needed.
@@ -9,7 +8,6 @@
 
 function optionsframework_option_name() {
 
-    //error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
     // This gets the theme name from the stylesheet
     $themename = wp_get_theme();
     $themename = preg_replace("/\W/", "_", strtolower($themename) );
@@ -17,9 +15,6 @@ function optionsframework_option_name() {
     $optionsframework_settings = get_option( 'optionsframework' );
     $optionsframework_settings['id'] = $themename;
     update_option( 'optionsframework', $optionsframework_settings );
-    //error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
-    //error_log(print_r(get_option($optionsframework_settings), true)) ;
-    //error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
 }
 
 /**
@@ -573,10 +568,10 @@ function optionsframework_options() {
     
     $options[] = array(
         'name' => __('Site Credits', 'options_framework_theme'),
-        'desc' => sprintf( __( 'Customize how the site credits appear.  Available keyword substitions:  %%DAY%%, %%MONTH%%, %%YEAR%%, %%SITENAME%%, %%TAGLINE%%')),
+        'desc' => __('Customize how the site credits appear.  Available keyword substitions:  %DAY%, %MONTH%, %YEAR%, %SITENAME%, %TAGLINE%, %VERSION%, %THEMENAME%, %THEMEVERSION%, %THEMEURI%, %PARENTNAME%, %PARENTVERSION%, %PARENTURI%', 'twentyten'),
         'id' => 'acme_credits',
         'type' => 'editor',
-        'std' => '<p style="text-align: right;">Copyright &copy; 2012-%YEAR%, %SITENAME% - All rights reserved.<br></p>',
+        'std' => '<p style="text-align: right;">Copyright &copy; 2012-%YEAR%, %SITENAME% - All rights reserved.<br/><a href="%THEMEURI%">%THEMENAME% %THEMEVERSION%</a> is a child theme of <a href="%PARENTURI%">%PARENTNAME% %PARENTVERSION%</a></p></p>',
         'settings' => $wp_editor_settings );
 
     //  Custom CSS
